@@ -8,6 +8,17 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
+      # Caches and restores the bazel build directory.
+      - name: Cache bazel build results
+        uses: actions/cache@v2.0.0
+        env:
+          cache-name: bazel-cache
+        with:
+          path: ~/.cache/bazel
+          key: ${{ runner.os }}-${{ env.cache-name }}-${{ github.ref }}
+          restore-keys: |
+            ${{ runner.os }}-${{ env.cache-name }}-master
+
       # Checks-out your repository under $GITHUB_WORKSPACE, which is the CWD for
       # the rest of the steps
       - uses: actions/checkout@v2
