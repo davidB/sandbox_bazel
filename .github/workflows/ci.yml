@@ -17,9 +17,7 @@ jobs:
           path: |
             ~/.cache/bazelisk
             ~/.cache/bazel
-          key: ${{ runner.os }}-${{ env.cache-name }}-${{ github.ref }}
-          restore-keys: |
-            ${{ runner.os }}-${{ env.cache-name }}-development
+          key: ${{ runner.os }}-${{ env.cache-name }}
 
       # Checks-out your repository under $GITHUB_WORKSPACE, which is the CWD for
       # the rest of the steps
