@@ -1,6 +1,7 @@
 genrule(
     name = "version",
-    srcs = [".git"],
+    srcs = glob([".git/**"]),
     outs = ["version.txt"],
-    cmd_bash = "git --git-dir=$(location :.git) describe --always --dirty |tee $@",
+    cmd_bash = "git --git-dir=.git --no-pager describe --always --dirty |tee $@",
+    local = True,
 )
