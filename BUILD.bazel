@@ -1,7 +1,7 @@
 genrule(
     name = "version",
-    srcs = glob([".git/**"]),
     outs = ["version.txt"],
-    cmd_bash = "git --git-dir=.git --no-pager describe --always --dirty |tee $@",
-    local = True,
+    # alternative: "sed -n 's/STABLE_BUILD_GIT_DESCRIBE //p' bazel-out/stable-status.txt"
+    cmd_bash = "grep -Po '^STABLE_BUILD_GIT_DESCRIBE\\s+\\K.*' bazel-out/stable-status.txt |tee $@",
+    stamp = True,
 )
