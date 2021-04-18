@@ -1,0 +1,42 @@
+load("@rules_python//python:defs.bzl", "py_binary", "py_library", "py_test")
+load("@my_python_deps//:requirements.bzl", "requirement")
+
+py_library(
+    name = "webapp",
+    srcs = ["main.py"],
+    srcs_version = "PY3",
+    deps = [requirement("fastapi")],
+)
+
+py_test(
+    name = "test",
+    srcs = [
+        "test.py",
+    ],
+    # main = "test.py",
+    args = [
+        "--capture=no",
+    ],
+    python_version = "PY3",
+    srcs_version = "PY3",
+    deps = [
+        ":webapp",
+        requirement("requests"),
+        requirement("fastapi"),
+        requirement("pytest"),
+    ],
+)
+
+# to add additionals parameters place them after "--" in bazel call, like:
+# `bazel run //webapp:run -- --reload`
+py_binary(
+    name = "run",
+    srcs = ["run.py"],
+    python_version = "PY3",
+    srcs_version = "PY3",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":webapp",
+        requirement("uvicorn"),
+    ],
+)
