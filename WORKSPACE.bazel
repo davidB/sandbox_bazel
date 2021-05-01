@@ -35,3 +35,18 @@ pyenv_install(
     py2 = "2.7.18",
     py3 = "3.9.2",
 )
+
+http_archive(
+    name = "linting_system",
+    sha256 = "",
+    strip_prefix = "bazel-linting-system-0.4.0",
+    url = "https://github.com/thundergolfer/bazel-linting-system/archive/v0.4.0.zip",
+)
+
+load("@linting_system//repositories:repositories.bzl", linting_sys_repositories = "repositories")
+
+linting_sys_repositories()
+
+load("@linting_system//repositories:go_repositories.bzl", linting_sys_deps = "go_deps")
+
+linting_sys_deps()

@@ -1,0 +1,21 @@
+load("@linting_system//:rules.bzl", "linter")
+load("@rules_python//python:defs.bzl", "py_binary")
+load("@my_python_deps//:requirements.bzl", "requirement")
+
+package(default_visibility = ["//visibility:public"])
+
+py_binary(
+    name = "python_linter",
+    srcs = ["python_linter.py"],
+    python_version = "PY3",
+    srcs_version = "PY3",
+    deps = [
+        requirement("black"),
+    ],
+)
+
+linter(
+    name = "python",
+    executable = "//tools/linting:python_linter",
+    # executable_path = "$(location //tools/linting:python_linter)",
+)
