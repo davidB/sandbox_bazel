@@ -40,3 +40,14 @@ py_binary(
         requirement("uvicorn"),
     ],
 )
+
+genrule(
+    name = "check",
+    srcs = glob(["**/*.py"]),
+    outs = ["check.txt"],
+    cmd_bash = """(
+        $(location //tools/python_check) --verbose $(SRCS)
+        ) | tee $@
+    """,
+    tools = ["//tools/python_check"],
+)
