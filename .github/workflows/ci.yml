@@ -11,20 +11,17 @@ jobs:
       # Caches and restores the bazelisk download directory, the bazel build directory.
       - name: Cache bazel
         uses: actions/cache@v2.1.5
-        env:
-          cache-name: bazel-cache
         with:
           path: |
             ~/.cache/bazelisk
             ~/.cache/bazel
-          key: ${{ runner.os }}-${{ env.cache-name }}
+          key: ${{ runner.os }}-bazel-cache
 
       # Checks-out your repository under $GITHUB_WORKSPACE, which is the CWD for
       # the rest of the steps
       - uses: actions/checkout@v2
 
-      # build
-      - name: Build the code
-        run: bazel build //...
       - name: Run the test
         run: bazel test //...
+      - name: Build the code
+        run: bazel build //...
