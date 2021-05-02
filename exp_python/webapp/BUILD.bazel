@@ -1,5 +1,6 @@
 load("@rules_python//python:defs.bzl", "py_binary", "py_library", "py_test")
 load("@my_python_deps//:requirements.bzl", "requirement")
+load("//tools/python_check:defs.bzl", "python_check_test")
 
 py_library(
     name = "webapp",
@@ -41,13 +42,7 @@ py_binary(
     ],
 )
 
-genrule(
+python_check_test(
     name = "check",
     srcs = glob(["**/*.py"]),
-    outs = ["check.txt"],
-    cmd_bash = """(
-        $(location //tools/python_check) --verbose $(SRCS)
-        ) | tee $@
-    """,
-    tools = ["//tools/python_check"],
 )
