@@ -1,6 +1,6 @@
-load("@rules_python//python:defs.bzl", "py_binary", "py_library", "py_test")
+load("@rules_python//python:defs.bzl", "py_binary", "py_library")
 load("@my_python_deps//:requirements.bzl", "requirement")
-load("//tools/python_check:defs.bzl", "python_check_test")
+load("//tools/pytest:defs.bzl", "pytest_test")
 
 py_library(
     name = "webapp",
@@ -9,22 +9,14 @@ py_library(
     deps = [requirement("fastapi")],
 )
 
-py_test(
+pytest_test(
     name = "test",
-    srcs = [
-        "test.py",
-    ],
-    # main = "test.py",
-    args = [
-        "--capture=no",
-    ],
-    python_version = "PY3",
-    srcs_version = "PY3",
+    srcs = glob(["*.py"]),
     deps = [
+        ":run",
         ":webapp",
         requirement("requests"),
         requirement("fastapi"),
-        requirement("pytest"),
     ],
 )
 
@@ -40,9 +32,4 @@ py_binary(
         ":webapp",
         requirement("uvicorn"),
     ],
-)
-
-python_check_test(
-    name = "check",
-    srcs = glob(["**/*.py"]),
 )
