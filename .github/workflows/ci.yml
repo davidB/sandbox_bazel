@@ -8,6 +8,21 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
+      # cache see [cache/examples.md at main · actions/cache](https://github.com/actions/cache/blob/main/examples.md)
+      # Caches python pip
+      - uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      # Caches python pyenv (to avoid rebuild of python,...)
+      - uses: actions/cache@v2
+        with:
+          path: ~/.pyenv
+          key: ${{ runner.os }}-pyenv
+
       # Caches and restores the bazelisk download directory, the bazel build directory.
       - name: Cache bazel
         uses: actions/cache@v2.1.5
