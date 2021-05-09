@@ -10,7 +10,8 @@ jobs:
     steps:
       # cache see [cache/examples.md at main · actions/cache](https://github.com/actions/cache/blob/main/examples.md)
       # Caches python pip
-      - uses: actions/cache@v2
+      - name: Cache pip
+        uses: actions/cache@v2
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
@@ -18,7 +19,8 @@ jobs:
             ${{ runner.os }}-pip-
 
       # Caches python pyenv (to avoid rebuild of python,...)
-      - uses: actions/cache@v2
+      - name: Cache pyenv
+        uses: actions/cache@v2
         with:
           path: ~/.pyenv
           key: ${{ runner.os }}-pyenv
