@@ -32,17 +32,21 @@ jobs:
           key: ${{ runner.os }}-bazel-cache
 
       - name: Cache nix packages
-        uses: actions/cache@v2.1.5
+        uses: rikhuijzer/cache-install@v1.0.8
         with:
-          path: |
-            /nix/store/
-            /nix/var/nix/profiles/per-user/*/profile/bin
-            /nix/var/nix/profiles/default/bin/
-            /nix/var/nix/profiles/per-user/root/channels
           key: ${{ runner.os }}-nix-${{ hashFiles('**.nix') }}
-          restore-keys: |
-            ${{ runner.os }}-nix-
+          nix_file: shell.nix
 
+        # uses: actions/cache@v2.1.5
+        # with:
+        #   path: |
+        #     /nix/store/
+        #     /nix/var/nix/profiles/per-user/*/profile/bin
+        #     /nix/var/nix/profiles/default/bin/
+        #     /nix/var/nix/profiles/per-user/root/channels
+        #   key: ${{ runner.os }}-nix-${{ hashFiles('**.nix') }}
+        #   restore-keys: |
+        #     ${{ runner.os }}-nix-
       - uses: cachix/install-nix-action@v13
       - name: Run the test
         run: nix-shell --command 'bazel test //...'
