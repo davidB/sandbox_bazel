@@ -31,7 +31,7 @@ jobs:
             ~/.cache/bazel
           key: ${{ runner.os }}-bazel-cache
 
-      - name: Cache install Nix packages
+      - name: Cache nix packages
         uses: actions/cache@v2.1.5
         with:
           path: |
@@ -45,6 +45,6 @@ jobs:
 
       - uses: cachix/install-nix-action@v13
       - name: Run the test
-        run: nix-shell --command bazel test //...
+        run: nix-shell --command 'bazel test //...'
       - name: Build the code
-        run: nix-shell --command bazel build //...
+        run: nix-shell --command 'bazel build //...'
