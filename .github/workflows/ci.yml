@@ -33,19 +33,19 @@ jobs:
 
       - name: Install nix
         uses: cachix/install-nix-action@v13
-      - name: Cache nix packages
-        uses: actions/cache@v2.1.5
-        with:
-          path: |
-            /nix/store/
-            /nix/var/nix/profiles/per-user/*/profile/bin
-            /nix/var/nix/profiles/default/bin/
-            /nix/var/nix/profiles/per-user/root/channels
-          key: ${{ runner.os }}-nix-${{ hashFiles('**.nix') }}
-          restore-keys: |
-            ${{ runner.os }}-nix-
-        env:
-          ACTIONS_ALLOW_UNSECURE_COMMANDS: "true"
+      # - name: Cache nix packages
+      #   uses: actions/cache@v2.1.5
+      #   with:
+      #     path: |
+      #       /nix/store/
+      #       /nix/var/nix/profiles/per-user/*/profile/bin
+      #       /nix/var/nix/profiles/default/bin/
+      #       /nix/var/nix/profiles/per-user/root/channels
+      #     key: ${{ runner.os }}-nix-${{ hashFiles('**.nix') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-nix-
+      #   env:
+      #     ACTIONS_ALLOW_UNSECURE_COMMANDS: "true"
 
       - name: Info nix-shell
         run: nix-shell --run 'nix-info -m'
