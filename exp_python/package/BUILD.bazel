@@ -1,0 +1,45 @@
+load("@io_bazel_rules_docker//container:container.bzl", "container_image", "container_push")
+load("@io_bazel_rules_docker//contrib:dockerfile_build.bzl", "dockerfile_image")
+
+# # https://github.com/bazelbuild/rules_docker#container_push-1
+# container_push(
+#    name = "push",
+#    image = ":container",
+#    format = "OCI",
+#    registry = "gcr.io",
+#    repository = "{BUILD_USER}/my-image",
+#    tag = "{STABLE_BUILD_GIT_DESCRIBE}",
+#    stamp = True,
+# )
+
+# # https://github.com/bazelbuild/rules_docker/blob/master/docs/image.md
+# container_image(
+#     name = "my-image",
+#     # repository = "{BUILD_USER}/my-image:{STABLE_BUILD_GIT_DESCRIBE}" # default bazel/package_name:target
+#     # References container_pull from WORKSPACE (above)
+#     base = "@python3_base//image",
+#     files = ["//exp_python/webapp:run"],
+#     cmd = ["run"]
+#     stamp = True,
+# )
+
+# dockerfile_image(
+#     name="mydockerfile"
+#     dockerfile="Dockerfile"
+# )
+
+# # failed:
+# # WARNING: Error loading config file: .dockercfg: $HOME is not defined
+# # error: open /home/david/.docker/buildx/instances/.tmp-blissful_haslett425824412: read-only file system
+# genrule(
+#     name = "call_docker_build",
+#     srcs = ["Dockerfile"],
+#     outs = ["image.tar"],
+#     # based on https://stackoverflow.com/questions/61638931/docker-buildx-oci-output
+#     cmd_bash = """
+#     DRIVER=$$(docker buildx create --driver docker-container --driver-opt image=moby/buildkit:master,network=host)
+#     docker buildx inspect --bootstrap
+#     docker buildx use $$DRIVER
+#     docker buildx build -o type=oci,dest=$@ -f $< $$(dirname $<)
+#     """,
+# )

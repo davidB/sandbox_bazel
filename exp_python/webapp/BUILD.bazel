@@ -1,6 +1,8 @@
 load("@rules_python//python:defs.bzl", "py_binary", "py_library")
 load("@my_python_deps//:requirements.bzl", "requirement")
 load("//tools/pytest:defs.bzl", "pytest_test")
+load("@io_bazel_rules_docker//container:container.bzl", "container_image", "container_push")
+load("@io_bazel_rules_docker//python3:image.bzl", "py3_image")
 
 py_library(
     name = "webapp",
@@ -33,3 +35,59 @@ py_binary(
         requirement("uvicorn"),
     ],
 )
+
+# py3_image(
+#     name = "run",
+#     srcs = ["run.py"],
+#     srcs_version = "PY3",
+#     visibility = ["//visibility:public"],
+#     deps = [
+#         ":webapp",
+#         requirement("uvicorn"),
+#     ],
+# )
+
+# https://github.com/bazelbuild/rules_docker/tree/8c3a8110a0c519929a7e79c39ac345a0f8c74d04#python-tools
+# to run
+# - `bazel run //exp_python/webapp:run`
+# - `docker run --rm -it -p 8000:8000 bazel/exp_python/webapp:run`
+py3_image(
+    name = "run_image",
+    srcs = ["run.py"],
+    args = [
+        "--host",
+        "0.0.0.0",
+    ],
+    base = "@python3_base//image",
+    main = "run.py",
+    # python_version = "PY3",
+    srcs_version = "PY3",
+    visibility = ["//visibility:public"],
+    deps = [
+        ":webapp",
+        requirement("uvicorn"),
+    ],
+)
+
+# # https://github.com/bazelbuild/rules_docker/blob/master/docs/image.md
+# container_image(
+#     name = "run_image2",
+#     base = ":run_image",
+#     entrypoint = [
+#         "/usr/local/bin/python",
+#         "/app/exp_python/webapp/run.binary",
+#     ],
+#     ports = ["8000"],
+#     stamp = True,
+# )
+
+# # https://github.com/bazelbuild/rules_docker#container_push-1
+# container_push(
+#    name = "push",
+#    image = ":container",
+#    format = "OCI",
+#    registry = "gcr.io",
+#    repository = "{BUILD_USER}/my-image",
+#    tag = "{STABLE_BUILD_GIT_DESCRIBE}",
+#    stamp = True,
+# )
