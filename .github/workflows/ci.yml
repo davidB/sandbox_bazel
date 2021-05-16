@@ -31,6 +31,8 @@ jobs:
             ~/.cache/bazel
           key: ${{ runner.os }}-bazel-cache
 
+      - name: Install nix
+        uses: cachix/install-nix-action@v13
       - name: Cache nix packages
         uses: actions/cache@v2.1.5
         with:
@@ -42,9 +44,9 @@ jobs:
           key: ${{ runner.os }}-nix-${{ hashFiles('**.nix') }}
           restore-keys: |
             ${{ runner.os }}-nix-
-      - name: info & nix-shell
+
+      - name: Info nix-shell
         run: nix-shell -p nix-info --run "nix-info -m"
-      - uses: cachix/install-nix-action@v13
       - name: Run the test
         run: nix-shell --command 'bazel test //...'
       - name: Build the code
