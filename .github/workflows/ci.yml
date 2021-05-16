@@ -45,11 +45,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-nix-
         env:
-          ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: "true"
 
       - name: Info nix-shell
-        run: nix-shell -p nix-info --run "nix-info -m"
+        run: nix-shell --run 'nix-info -m'
       - name: Run the test
-        run: nix-shell --command 'bazel test //...'
+        run: nix-shell --run 'bazel test //...'
       - name: Build the code
-        run: nix-shell --command 'bazel build //...'
+        run: nix-shell --run 'bazel build //...'

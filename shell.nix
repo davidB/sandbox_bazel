@@ -19,6 +19,7 @@
 pkgs.mkShell {                  # mkShell is a helper function
   name="dev-environment";       # that requires a name
   buildInputs = with pkgs; [    # for a list of packages (search https://search.nixos.org/packages)
+    nix-info
     python39
     python39Packages.pip
     python39Packages.virtualenv
