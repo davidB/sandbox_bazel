@@ -44,6 +44,8 @@ jobs:
           key: ${{ runner.os }}-nix-${{ hashFiles('**.nix') }}
           restore-keys: |
             ${{ runner.os }}-nix-
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true
 
       - name: Info nix-shell
         run: nix-shell -p nix-info --run "nix-info -m"
