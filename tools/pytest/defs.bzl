@@ -27,6 +27,7 @@ def pytest_test(name, srcs, deps = [], args = [], data = [], **kwargs):
             requirement("pytest-black"),
             requirement("pytest-pylint"),
             # requirement("pytest-mypy"),
+            requirement("setuptools"), # require by pylint
         ],
         data = [
             "//tools/pytest:.pylintrc",

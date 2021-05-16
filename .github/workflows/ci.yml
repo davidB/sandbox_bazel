@@ -8,6 +8,10 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, which is the CWD for
+      # the rest of the steps
+      - uses: actions/checkout@v2
+
       # cache see [cache/examples.md at main · actions/cache](https://github.com/actions/cache/blob/main/examples.md)
       # Caches python pip
       - name: Cache pip
@@ -18,13 +22,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pip-
 
-      # Caches python pyenv (to avoid rebuild of python,...)
-      - name: Cache pyenv
-        uses: actions/cache@v2
-        with:
-          path: ~/.pyenv
-          key: ${{ runner.os }}-pyenv
-
       # Caches and restores the bazelisk download directory, the bazel build directory.
       - name: Cache bazel
         uses: actions/cache@v2.1.5
@@ -34,11 +31,13 @@ jobs:
             ~/.cache/bazel
           key: ${{ runner.os }}-bazel-cache
 
-      # Checks-out your repository under $GITHUB_WORKSPACE, which is the CWD for
-      # the rest of the steps
-      - uses: actions/checkout@v2
-
+      - name: Cache install Nix packages
+        uses: rikhuijzer/cache-install@v1
+        with:
+          key: ${{ runner.os }}-nix-${{ hashFiles('shell.nix') }}
+          nix_file: "shell.nix"
+      - uses: cachix/install-nix-action@v13
       - name: Run the test
-        run: bazel test //...
+        run: nix-shell --command bazel test //...
       - name: Build the code
-        run: bazel build //...
+        run: nix-shell --command bazel build //...

@@ -12,3 +12,6 @@ pytest-black==0.3.12
 pytest-mypy==0.8.1
 pytest-pylint==0.18.0
 pylint==2.8.2
+
+# setuptools is a undeclared dependencies of pylint
+setuptools==56.2.0
