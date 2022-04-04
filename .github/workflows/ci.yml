@@ -15,7 +15,7 @@ jobs:
       # cache see [cache/examples.md at main · actions/cache](https://github.com/actions/cache/blob/main/examples.md)
       # Caches python pip
       - name: Cache pip
-        uses: actions/cache@v2
+        uses: actions/cache@v3.0.1
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
@@ -24,7 +24,7 @@ jobs:
 
       # Caches and restores the bazelisk download directory, the bazel build directory.
       - name: Cache bazel
-        uses: actions/cache@v2.1.5
+        uses: actions/cache@v3.0.1
         with:
           path: |
             ~/.cache/bazelisk
@@ -32,7 +32,7 @@ jobs:
           key: ${{ runner.os }}-bazel-cache
 
       - name: Cache nix packages
-        uses: actions/cache@v2.1.5
+        uses: actions/cache@v3.0.1
         with:
           path: |
             /nix/store/
